@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click to Copy</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #010101;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(204, 195, 195, 0.592);
+            text-align: center;
+        }
+        .copy-text {
+            padding: 10px;
+            background: #a4a4a4;
+            margin-top: 20px;
+            cursor: pointer;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="message"></div>
+        <div id="copyText" class="copy-text"></div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const pasteValue = urlParams.get('paste');
+            const messageDiv = document.getElementById('message');
+            const copyTextDiv = document.getElementById('copyText');
+
+            if (pasteValue) {
+                copyTextDiv.textContent = pasteValue;
+                messageDiv.textContent = "Click the text below to copy:";
+                copyTextDiv.style.display = 'block';
+                copyTextDiv.addEventListener('click', function() {
+                    navigator.clipboard.writeText(pasteValue).then(() => {
+                        alert('Text copied to clipboard');
+                    }).catch(err => {
+                        console.error(err);
+                    });
+                });
+            } else {
+                messageDiv.textContent = "Invalid request";
+                copyTextDiv.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
